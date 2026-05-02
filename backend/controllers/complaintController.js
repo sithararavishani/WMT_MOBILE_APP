@@ -132,3 +132,4 @@ module.exports = {
   getComplaintsByStatus, getComplaintsByPriority, updateComplaintStatus, resolveComplaint,
   rateComplaint, deleteComplaint, getComplaintStatistics
 };
+// Complaint and Cleaning Module - Student 5 
