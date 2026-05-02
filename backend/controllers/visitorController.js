@@ -268,4 +268,5 @@ module.exports = {
   checkOut,
   deleteVisitRequest,
   getVisitorStatistics
-};
+};// Visitor Management Module - Student 4 
+// Visitor Management Module - Student 4 
