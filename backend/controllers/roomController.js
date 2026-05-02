@@ -1,3 +1,5 @@
+// Room Management Module - Sithara
+
 const Room = require('../models/Room');
 const Resident = require('../models/Resident');
 
@@ -824,3 +826,4 @@ module.exports = {
   // Public
   getPublicRooms
 };
+// Room Management Module - Sithara 
