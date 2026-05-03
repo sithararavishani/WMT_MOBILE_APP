@@ -335,3 +335,4 @@ module.exports = {
   getMyProfile,
   bookRoom
 };
+// Resident Management Module - Student 2 
