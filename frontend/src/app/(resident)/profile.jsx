@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { View, Text, TouchableOpacity, Alert, ScrollView, StyleSheet, StatusBar } from "react-native";
+import { View, Text, TouchableOpacity, Alert, ScrollView, StyleSheet, StatusBar, Platform } from "react-native";
 import { useRouter, useFocusEffect } from "expo-router";
 import { TextInput, ActivityIndicator } from "react-native-paper";
 import { useAuth } from "../../context/AuthContext";
@@ -89,7 +89,15 @@ export default function ProfileScreen() {
     }
   }
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    if (Platform.OS === 'web' && typeof window !== 'undefined') {
+      const confirmed = window.confirm('Are you sure you want to logout?');
+      if (!confirmed) return;
+      await logout();
+      router.replace('/(auth)/login');
+      return;
+    }
+
     Alert.alert("Confirm Logout", "Are you sure?", [
       { text: "Cancel", style: "cancel" },
       {

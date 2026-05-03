@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Alert, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../context/AuthContext';
 import { Card } from '../../components/common/Card';
@@ -11,6 +11,14 @@ export default function AdminProfile() {
   const router = useRouter();
 
   const handleLogout = async () => {
+    if (Platform.OS === 'web' && typeof window !== 'undefined') {
+      const confirmed = window.confirm('Are you sure you want to logout?');
+      if (!confirmed) return;
+      await logout();
+      router.replace('/(auth)/login');
+      return;
+    }
+
     Alert.alert('Confirm Logout', 'Are you sure you want to logout?', [
       { text: 'Cancel', style: 'cancel' },
       { text: 'Logout', style: 'destructive', onPress: async () => {

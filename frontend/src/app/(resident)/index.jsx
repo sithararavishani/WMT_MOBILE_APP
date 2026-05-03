@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, RefreshControl, StyleSheet, TouchableOpacity, Alert, StatusBar, Dimensions } from 'react-native';
+import { View, Text, ScrollView, RefreshControl, StyleSheet, TouchableOpacity, Alert, StatusBar, Dimensions, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../context/AuthContext';
 import { residentService } from '../../services/residentService';
@@ -48,7 +48,15 @@ export default function ResidentDashboard() {
 
   const onRefresh = () => { setRefreshing(true); fetchData(); };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    if (Platform.OS === 'web' && typeof window !== 'undefined') {
+      const confirmed = window.confirm('Are you sure you want to log out of HostelHub?');
+      if (!confirmed) return;
+      await logout();
+      router.replace('/(auth)/login');
+      return;
+    }
+
     Alert.alert('Sign Out', 'Are you sure you want to log out of HostelHub?', [
       { text: 'Cancel', style: 'cancel' },
       { text: 'Logout', style: 'destructive', onPress: async () => { await logout(); router.replace('/(auth)/login'); } }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, RefreshControl, StyleSheet, TouchableOpacity, Alert, StatusBar, Dimensions } from 'react-native';
+import { View, Text, ScrollView, RefreshControl, StyleSheet, TouchableOpacity, Alert, StatusBar, Dimensions, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
 import { roomService } from '../../services/roomService';
 import { residentService } from '../../services/residentService';
@@ -29,7 +29,15 @@ export default function AdminDashboard() {
   });
   const [refreshing, setRefreshing] = useState(false);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    if (Platform.OS === 'web' && typeof window !== 'undefined') {
+      const confirmed = window.confirm('Are you sure you want to sign out?');
+      if (!confirmed) return;
+      await logout();
+      router.replace('/(auth)/login');
+      return;
+    }
+
     Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
       { text: 'Cancel', style: 'cancel' },
       { text: 'Logout', style: 'destructive', onPress: async () => { await logout(); router.replace('/(auth)/login'); } }
